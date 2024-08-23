@@ -27,232 +27,143 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-async function fillDropdowns() {
-  await fillDropdown('Location', 'Rabat', 4);  // Assuming 'Rabat' corresponds to index 4
-  await fillDropdown('VisaType', 'National', 1); // Assuming 'National' corresponds to index 1
-  await fillDropdown('VisaSubType', 'Language/selectivity', 1); // Assuming 'Language/selectivity' corresponds to index 1
-  await fillDropdown('AppointmentCategoryId', 'Normal', 1); // Assuming 'Normal' corresponds to index 1
+
+console.log("Starting execution of the script.");
+
+// Variables to store the desired text values for each label
+const locationText = "Rabat";
+const visaTypeText = "National Visa";
+const visaSubTypeText = "Students - Non-tertiary studies";
+const appointmentCategoryText = "Normal";
+
+// Function to start the main process
+function startProcess() {
+    // Get all elements with class .form-label
+    const labels = document.querySelectorAll('.form-label');
+    console.log(`Found ${labels.length} elements with class .form-label.`);
+
+    // Filter and get the text and ID of only visible labels
+    const visibleLabels = Array.from(labels).filter(label => label.offsetParent !== null);
+    console.log(`Found ${visibleLabels.length} visible .form-label elements.`);
+
+    const visibleLabelDetails = visibleLabels.map(label => ({
+        text: label.textContent.trim(),
+        id: label.id || 'No ID'
+    }));
+    console.log("Extracted text and IDs from visible labels:", visibleLabelDetails);
+
+    // Define the desired order for clicking
+    const clickOrder = ['Location', 'Visa Type', 'Visa Sub Type', 'Category'];
+    const desiredTexts = [locationText, visaTypeText, visaSubTypeText, appointmentCategoryText];
+
+    // Sort the labels according to the desired order
+    const sortedLabels = clickOrder.map(order => visibleLabelDetails.find(label => label.text.includes(order))).filter(Boolean);
+
+    // Function to perform delayed clicking on span and desired li
+    function performDelayedActions() {
+        sortedLabels.reduce((promiseChain, labelDetail, index) => {
+            return promiseChain.then(() => new Promise((resolve) => {
+                const delay = Math.random() * 300 + 350; // Random delay between 800ms to 1600ms
+                console.log(`Waiting for ${delay} milliseconds before next action.`);
+                setTimeout(() => {
+                    clickSpanAndDesiredLi(labelDetail, desiredTexts[index]);
+                    resolve();
+                }, delay);
+            }));
+        }, Promise.resolve())
+        .then(() => {
+            // After all actions, click the submit button with delay
+            const submitDelay = Math.random() * 300 + 350; // Random delay between 2000ms to 3200ms
+            console.log(`Waiting for ${submitDelay} milliseconds before clicking submit button.`);
+            setTimeout(clickSubmitButton, submitDelay);
+        });
+    }
+
+    // Start performing delayed actions
+    performDelayedActions();
 }
 
-async function fillDropdown(dropdownType, selectText, selectIndex) {
-  for (let i = 1; i < 10; i++) {
-    const dropdown = document.querySelector(`[aria-owns="${dropdownType}${i}_listbox"]`);
-    if (dropdown && dropdown.offsetParent !== null) {
-      console.log(`${dropdownType} ${i} is visible`);
-      const kendoDropdown = $(`#${dropdownType}${i}`).data("kendoDropDownList");
-      if (kendoDropdown) {
-        kendoDropdown.select(selectIndex);
-        kendoDropdown.trigger("change");
-        await new Promise(resolve => setTimeout(resolve, 100)); // Add a delay
-      }
+// Function to click the span and the desired li in the corresponding ul
+function clickSpanAndDesiredLi(labelDetail, desiredText) {
+    if (labelDetail.id !== 'No ID') {
+        const listboxId = labelDetail.id.replace('_label', '_listbox');
+        const spanElement = document.querySelector(`span[aria-owns="${listboxId}"]`);
+        if (spanElement) {
+            console.log(`Clicking on span with aria-owns="${listboxId}" for label: ${labelDetail.text}.`);
+            spanElement.click();
+
+            // Wait until the ul element is visible
+            waitForElementVisible(`#${listboxId}`, () => {
+                // Click on the desired li in the ul with the corresponding id
+                const ulElement = document.getElementById(listboxId);
+                if (ulElement) {
+                    const desiredLi = Array.from(ulElement.querySelectorAll('li')).find(li => li.textContent.trim() === desiredText);
+                    if (desiredLi) {
+                        console.log(`Clicking on li with text "${desiredText}" in ul with id="${listboxId}".`);
+                        desiredLi.click();
+                    } else {
+                        console.log(`No li found with text "${desiredText}" in ul with id="${listboxId}".`);
+                    }
+                } else {
+                    console.log(`No ul found with id="${listboxId}".`);
+                }
+            });
+        } else {
+            console.log(`No span found with aria-owns="${listboxId}" for label: ${labelDetail.text}.`);
+        }
     }
-  }
 }
 
-function createButton(text, onClick) {
-  const button = document.createElement('button');
-  button.textContent = text;
-  button.onclick = onClick;
-  return button;
+// Function to wait until an element becomes visible
+function waitForElementVisible(selector, callback) {
+    const interval = setInterval(() => {
+        const element = document.querySelector(selector);
+        if (element && element.offsetParent !== null) {
+            clearInterval(interval);
+            callback();
+        }
+    }, 400); // Check every 400ms for visibility
 }
 
-// Function to handle captcha and form submission
-(async function handleCaptchaAndSubmit() {
-  let OnVerifyCaptcha;
-  let onAjaxSuccess;
+// Function to click the submit button with a randomized delay
+function clickSubmitButton() {
+    const submitButton = document.getElementById('btnSubmit');
+    if (submitButton) {
+        const delay = Math.random() * 300+ 350; // Random delay between 1600ms to 2200ms
+        console.log(`Delaying for ${delay} milliseconds before clicking the submit button with id "btnSubmit".`);
+        setTimeout(() => {
+            submitButton.click();
+            console.log('Clicked the submit button with id "btnSubmit".');
 
-  setTimeout(() => {
-    let interval = setInterval(() => {
-      if (typeof OnVerifyCaptcha !== "undefined" && typeof b !== "undefined" && typeof d !== "undefined") {
-        window.OnVerifyCaptcha = OnVerifyCaptcha;
-        $("#dpModal").modal("hide");
-        window.onDpAccept = OnVerifyCaptcha;
-        window.onDpReject = onAjaxSuccess;
-        clearInterval(interval);
-      }
-    }, 100);
-
-    let submitInterval = setInterval(() => {
-      const btnSubmit = $("#btnSubmit");
-      if (btnSubmit.is(":visible")) {
-        btnSubmit.click();
-        clearInterval(submitInterval);
-      }
-    }, 100);
-  }, 120);
-})();
-
-    //-------------------//
-
-
-})();
-    console.log("تم تنفيذ الشيفرة لزر Rabat Language/selectivity Normal بنجاح!");
-  });
-const RabatLPremiumButton = createButton(" Rabat Language/selectivity  Premium", function() {
-(function () {
-    "use strict";
-  (async function() {
-    'use strict';
-
-    var vtvUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vtv";
-    var thirdUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vt";
-
-    if (window.location.href.startsWith(vtvUrlPrefix)) {
-        const btnVerify = document.querySelector("#btnVerify");
-        if (btnVerify) {
-            btnVerify.click();
-        }
+            // Start checking for modal dismiss button visibility after clicking submit
+            checkModalDismissButton();
+        }, delay);
+    } else {
+        console.log('No button found with id "btnSubmit".');
     }
+}
 
-    let isOkButtonClicked = false;
+// Function to continuously check if the modal dismiss button is visible and click it
+function checkModalDismissButton() {
+    const initialDelay = Math.random() * 300 + 350; // Initial delay between 2000ms to 3000ms
+    console.log(`Waiting for ${initialDelay} milliseconds before checking modal dismiss button visibility.`);
 
-    async function RemplirLocation() {
-        var locationElement;
-        var isVisibleLocation;
-        for (var i = 1; i < 10; i++) {
-            locationElement = document.querySelector(
-                '[aria-owns="Location' + i + '_listbox"]'
-            );
-            if (locationElement !== null) {
-                isVisibleLocation = locationElement.offsetParent !== null;
-
-                if (isVisibleLocation) {
-                    console.log("Location " + i + " is visible");
-                    var Location = $("#Location" + i).data("kendoDropDownList");
-                    Location.select(4); //4 corresponds to 'Rabat'
-                    Location.trigger("change");
-
-                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-                } else {
-                    // console.log("Element " + i + " is not visible");
-                }
+    setTimeout(() => {
+        const interval = setInterval(() => {
+            const dismissButton = document.querySelector('[data-bs-dismiss="modal"]');
+            if (dismissButton && dismissButton.offsetParent !== null) {
+                clearInterval(interval);
+                console.log('Modal dismiss button found and visible. Clicking...');
+                dismissButton.click();
+            } else {
+                console.log('Modal dismiss button not yet visible. Checking again...');
             }
-        }
-    }
+        }, 500); // Check every 500ms
+    }, initialDelay);
+}
 
-    async function RemplirVisaType() {
-        var VisaTypeElement;
-        var isVisibleVisa;
-        for (var i = 1; i < 10; i++) {
-            VisaTypeElement = document.querySelector(
-                '[aria-owns="VisaType' + i + '_listbox"]'
-            );
-            if (VisaTypeElement !== null) {
-                isVisibleVisa = VisaTypeElement.offsetParent !== null;
-
-                if (isVisibleVisa) {
-                    console.log("VisaType " + i + " is visible");
-                    var VisaType = $("#VisaType" + i).data("kendoDropDownList");
-                    VisaType.select(1); // 1 corresponds to 'National'
-                    VisaType.trigger("change");
-
-                    await new Promise(resolve => {
-                        setTimeout(resolve, 100);
-                    });
-
-                    // Click the 'Ok' button in the modal
-                    $('button[data-bs-dismiss="modal"]').click();
-
-                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-                } else {
-                    // console.log("VisaType " + i + " is not visible");
-                }
-            }
-        }
-    }
-
-    async function RemplirVisaSubType() {
-        var VisaSubTypeElement;
-        var isVisibleSubVisa;
-        for (var i = 1; i < 10; i++) {
-            VisaSubTypeElement = document.querySelector(
-                '[aria-owns="VisaSubType' + i + '_listbox"]'
-            );
-            if (VisaSubTypeElement !== null) {
-                isVisibleSubVisa = VisaSubTypeElement.offsetParent !== null;
-
-                if (isVisibleSubVisa && isOkButtonClicked) {
-                    console.log("VisaSubType " + i + " is visible");
-                    var VisaSubType = $("#VisaSubType" + i).data("kendoDropDownList");
-                     VisaSubType.select(1); // 1 corresponds to 'Language/selectivity'
-                    VisaSubType.trigger("change");
-
-                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-                } else {
-                    // console.log("VisaType " + i + " is not visible");
-                }
-            }
-        }
-    }
-
-    async function RemplirCategoryId() {
-        var AppointmentCategoryIdElement;
-        var isVisible;
-        for (var i = 1; i < 10; i++) {
-            AppointmentCategoryIdElement = document.querySelector(
-                '[aria-owns="AppointmentCategoryId' + i + '_listbox"]'
-            );
-            if (AppointmentCategoryIdElement !== null) {
-                isVisible = AppointmentCategoryIdElement.offsetParent !== null;
-
-                if (isVisible) {
-                    console.log("Appointment " + i + " is visible");
-                    var AppCategoryId = $("#AppointmentCategoryId" + i).data(
-                        "kendoDropDownList"
-                    );
-                    AppCategoryId.select(2); // 2 corresponds to 'Premium'
-                    AppCategoryId.trigger("change");
-
-                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-                } else {
-                    // console.log("Element " + i + " is not visible");
-                }
-            }
-        }
-    }
-
-    function handleOkButtonClick() {
-        isOkButtonClicked = true;
-
-        RemplirVisaSubType();
-    }
-
-    $('button[data-bs-dismiss="modal"]').on("click", handleOkButtonClick);
-
-    await RemplirLocation();
-    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-    await RemplirVisaType();
-    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-    await RemplirCategoryId();
-
-    //--------------------//
-    var OnVerifyCaptcha;
-    var onAjaxSuccess;
-
-    setTimeout(function () {
-        var f = setInterval(function () {
-            if (
-                typeof OnVerifyCaptcha !== "undefined" &&
-                typeof b !== "undefined" &&
-                typeof d !== "undefined"
-            ) {
-                window.OnVerifyCaptcha = OnVerifyCaptcha;
-                $("#dpModal").modal("hide");
-                window.onDpAccept = OnVerifyCaptcha;
-                window.onDpReject = onAjaxSuccess;
-                clearInterval(f);
-            }
-        }, 100);
-
-        var a = setInterval(function () {
-            if ($("#btnSubmit").is(":visible")) {
-                $("#btnSubmit").click();
-                clearInterval(a);
-            }
-        }, 100);
-    }, 120);
-
-})();
+// Start the process
+startProcess();
 
     //-------------------//
 
