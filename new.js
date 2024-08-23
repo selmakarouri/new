@@ -1,40 +1,60 @@
+
  
 
 
 
 
 
+var vtvUrlPrefix = "https://www.blsspainmorocco.net/MAR/bls/vtv";
+var thirdUrlPrefix = "https://www.blsspainmorocco.net/MAR/bls/vt";
 
-var vtvUrlPrefix = "https://www.blsspainmorocco.net/MAR/Appointment/VisaType";
-var thirdUrlPrefix = "https://www.blsspainmorocco.net/MAR/Appointment/VisaType";
+1
 
-document.addEventListener('DOMContentLoaded', async () => {
-  if (window.location.href.startsWith(vtvUrlPrefix)) {
-    const btnVerify = document.querySelector("#btnVerify");
-    if (btnVerify) {
-      btnVerify.click();
-    }
-  } else if (window.location.href.startsWith(thirdUrlPrefix)) {
-    // Create and add the Rabat button
-    const RabatLNormalButton = createButton("Rabat Language/selectivity Normal", async () => {
-      await fillDropdowns();
-      const modalCloseButton = document.querySelector('button[data-bs-dismiss="modal"]');
-      if (modalCloseButton) {
-        modalCloseButton.click();
-      }
-    });
-    document.body.appendChild(RabatLNormalButton);
+
+
+
+//تحقق من الصفحة ونفذ الإجراء المناسب
+
+if (window.location.href.startsWith(vtvUrlPrefix)) {
+  const btnVerify = document.querySelector("#btnVerify");
+  if (btnVerify) {
+    btnVerify.click();
   }
-});
 
 
-console.log("Starting execution of the script.");
+//----------------VT--------------------//
+
+
+    } else if (window.location.href.startsWith(thirdUrlPrefix)) {
+  // دالة لإضافة الأزرار إلى الصفحة
+
+  // إنشاء الأزرار
+  const RabatLNormalButton = createButton("Rabat Language/selectivity Normal", function() {
+(function () {
+    "use strict";
+
+  (async function() {
+    'use strict';
+
+    var vtvUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vtv";
+    var thirdUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vt";
+
+    if (window.location.href.startsWith(vtvUrlPrefix)) {
+        const btnVerify = document.querySelector("#btnVerify");
+        if (btnVerify) {
+            btnVerify.click();
+        }
+    }
+
+    let isOkButtonClicked = false;
+
+    console.log("Starting execution of the script.");
 
 // Variables to store the desired text values for each label
 const locationText = "Rabat";
-const visaTypeText = "National Visa";
-const visaSubTypeText = "Students - Non-tertiary studies";
-const appointmentCategoryText = "Normal";
+const visaTypeText = "Schengen Visa";
+const visaSubTypeText = "Schengen Visa";
+const appointmentCategoryText = "Prime Time";
 
 // Function to start the main process
 function startProcess() {
@@ -165,6 +185,881 @@ function checkModalDismissButton() {
 // Start the process
 startProcess();
 
+    //-------------------//
+
+
+})();
+    console.log("تم تنفيذ الشيفرة لزر Rabat Language/selectivity Normal بنجاح!");
+  });
+const RabatLPremiumButton = createButton(" Rabat Language/selectivity  Premium", function() {
+(function () {
+    "use strict";
+  (async function() {
+    'use strict';
+
+    var vtvUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vtv";
+    var thirdUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vt";
+
+    if (window.location.href.startsWith(vtvUrlPrefix)) {
+        const btnVerify = document.querySelector("#btnVerify");
+        if (btnVerify) {
+            btnVerify.click();
+        }
+    }
+
+    let isOkButtonClicked = false;
+
+    async function RemplirLocation() {
+        var locationElement;
+        var isVisibleLocation;
+        for (var i = 1; i < 10; i++) {
+            locationElement = document.querySelector(
+                '[aria-owns="Location' + i + '_listbox"]'
+            );
+            if (locationElement !== null) {
+                isVisibleLocation = locationElement.offsetParent !== null;
+
+                if (isVisibleLocation) {
+                    console.log("Location " + i + " is visible");
+                    var Location = $("#Location" + i).data("kendoDropDownList");
+                    Location.select(4); //4 corresponds to 'Rabat'
+                    Location.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("Element " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirVisaType() {
+        var VisaTypeElement;
+        var isVisibleVisa;
+        for (var i = 1; i < 10; i++) {
+            VisaTypeElement = document.querySelector(
+                '[aria-owns="VisaType' + i + '_listbox"]'
+            );
+            if (VisaTypeElement !== null) {
+                isVisibleVisa = VisaTypeElement.offsetParent !== null;
+
+                if (isVisibleVisa) {
+                    console.log("VisaType " + i + " is visible");
+                    var VisaType = $("#VisaType" + i).data("kendoDropDownList");
+                    VisaType.select(1); // 1 corresponds to 'National'
+                    VisaType.trigger("change");
+
+                    await new Promise(resolve => {
+                        setTimeout(resolve, 100);
+                    });
+
+                    // Click the 'Ok' button in the modal
+                    $('button[data-bs-dismiss="modal"]').click();
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("VisaType " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirVisaSubType() {
+        var VisaSubTypeElement;
+        var isVisibleSubVisa;
+        for (var i = 1; i < 10; i++) {
+            VisaSubTypeElement = document.querySelector(
+                '[aria-owns="VisaSubType' + i + '_listbox"]'
+            );
+            if (VisaSubTypeElement !== null) {
+                isVisibleSubVisa = VisaSubTypeElement.offsetParent !== null;
+
+                if (isVisibleSubVisa && isOkButtonClicked) {
+                    console.log("VisaSubType " + i + " is visible");
+                    var VisaSubType = $("#VisaSubType" + i).data("kendoDropDownList");
+                     VisaSubType.select(1); // 1 corresponds to 'Language/selectivity'
+                    VisaSubType.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("VisaType " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirCategoryId() {
+        var AppointmentCategoryIdElement;
+        var isVisible;
+        for (var i = 1; i < 10; i++) {
+            AppointmentCategoryIdElement = document.querySelector(
+                '[aria-owns="AppointmentCategoryId' + i + '_listbox"]'
+            );
+            if (AppointmentCategoryIdElement !== null) {
+                isVisible = AppointmentCategoryIdElement.offsetParent !== null;
+
+                if (isVisible) {
+                    console.log("Appointment " + i + " is visible");
+                    var AppCategoryId = $("#AppointmentCategoryId" + i).data(
+                        "kendoDropDownList"
+                    );
+                    AppCategoryId.select(2); // 2 corresponds to 'Premium'
+                    AppCategoryId.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("Element " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    function handleOkButtonClick() {
+        isOkButtonClicked = true;
+
+        RemplirVisaSubType();
+    }
+
+    $('button[data-bs-dismiss="modal"]').on("click", handleOkButtonClick);
+
+    await RemplirLocation();
+    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+    await RemplirVisaType();
+    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+    await RemplirCategoryId();
+
+    //--------------------//
+    var OnVerifyCaptcha;
+    var onAjaxSuccess;
+
+    setTimeout(function () {
+        var f = setInterval(function () {
+            if (
+                typeof OnVerifyCaptcha !== "undefined" &&
+                typeof b !== "undefined" &&
+                typeof d !== "undefined"
+            ) {
+                window.OnVerifyCaptcha = OnVerifyCaptcha;
+                $("#dpModal").modal("hide");
+                window.onDpAccept = OnVerifyCaptcha;
+                window.onDpReject = onAjaxSuccess;
+                clearInterval(f);
+            }
+        }, 100);
+
+        var a = setInterval(function () {
+            if ($("#btnSubmit").is(":visible")) {
+                $("#btnSubmit").click();
+                clearInterval(a);
+            }
+        }, 100);
+    }, 120);
+
+})();
+
+    //-------------------//
+
+})();
+    console.log("تم تنفيذ الشيفرة لزر Rabat Language/selectivity بنجاح!");
+  });
+    
+  const RabatNNormalButton = createButton("Rabat Students - Non-tertiary studies  Normal", function() {
+(function () {
+    "use strict";
+
+     (async function() {
+    'use strict';
+
+    var vtvUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vtv";
+    var thirdUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vt";
+
+    if (window.location.href.startsWith(vtvUrlPrefix)) {
+        const btnVerify = document.querySelector("#btnVerify");
+        if (btnVerify) {
+            btnVerify.click();
+        }
+    }
+
+    let isOkButtonClicked = false;
+
+    async function RemplirLocation() {
+        var locationElement;
+        var isVisibleLocation;
+        for (var i = 1; i < 10; i++) {
+            locationElement = document.querySelector(
+                '[aria-owns="Location' + i + '_listbox"]'
+            );
+            if (locationElement !== null) {
+                isVisibleLocation = locationElement.offsetParent !== null;
+
+                if (isVisibleLocation) {
+                    console.log("Location " + i + " is visible");
+                    var Location = $("#Location" + i).data("kendoDropDownList");
+                    Location.select(4); //4 corresponds to 'Rabat'
+                    Location.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("Element " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirVisaType() {
+        var VisaTypeElement;
+        var isVisibleVisa;
+        for (var i = 1; i < 10; i++) {
+            VisaTypeElement = document.querySelector(
+                '[aria-owns="VisaType' + i + '_listbox"]'
+            );
+            if (VisaTypeElement !== null) {
+                isVisibleVisa = VisaTypeElement.offsetParent !== null;
+
+                if (isVisibleVisa) {
+                    console.log("VisaType " + i + " is visible");
+                    var VisaType = $("#VisaType" + i).data("kendoDropDownList");
+                    VisaType.select(1); // 1 corresponds to 'National '
+                    VisaType.trigger("change");
+
+                    await new Promise(resolve => {
+                        setTimeout(resolve, 100);
+                    });
+
+                    // Click the 'Ok' button in the modal
+                    $('button[data-bs-dismiss="modal"]').click();
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("VisaType " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirVisaSubType() {
+        var VisaSubTypeElement;
+        var isVisibleSubVisa;
+        for (var i = 1; i < 10; i++) {
+            VisaSubTypeElement = document.querySelector(
+                '[aria-owns="VisaSubType' + i + '_listbox"]'
+            );
+            if (VisaSubTypeElement !== null) {
+                isVisibleSubVisa = VisaSubTypeElement.offsetParent !== null;
+
+                if (isVisibleSubVisa && isOkButtonClicked) {
+                    console.log("VisaSubType " + i + " is visible");
+                    var VisaSubType = $("#VisaSubType" + i).data("kendoDropDownList");
+                     VisaSubType.select(2); //2 corresponds to ' Non-tertiary studies '
+                    VisaSubType.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("VisaType " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirCategoryId() {
+        var AppointmentCategoryIdElement;
+        var isVisible;
+        for (var i = 1; i < 10; i++) {
+            AppointmentCategoryIdElement = document.querySelector(
+                '[aria-owns="AppointmentCategoryId' + i + '_listbox"]'
+            );
+            if (AppointmentCategoryIdElement !== null) {
+                isVisible = AppointmentCategoryIdElement.offsetParent !== null;
+
+                if (isVisible) {
+                    console.log("Appointment " + i + " is visible");
+                    var AppCategoryId = $("#AppointmentCategoryId" + i).data(
+                        "kendoDropDownList"
+                    );
+                    AppCategoryId.select(1); // 1 corresponds to 'Normal'
+                    AppCategoryId.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("Element " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    function handleOkButtonClick() {
+        isOkButtonClicked = true;
+
+        RemplirVisaSubType();
+    }
+
+    $('button[data-bs-dismiss="modal"]').on("click", handleOkButtonClick);
+
+    await RemplirLocation();
+    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+    await RemplirVisaType();
+    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+    await RemplirCategoryId();
+
+    //--------------------//
+    var OnVerifyCaptcha;
+    var onAjaxSuccess;
+
+    setTimeout(function () {
+        var f = setInterval(function () {
+            if (
+                typeof OnVerifyCaptcha !== "undefined" &&
+                typeof b !== "undefined" &&
+                typeof d !== "undefined"
+            ) {
+                window.OnVerifyCaptcha = OnVerifyCaptcha;
+                $("#dpModal").modal("hide");
+                window.onDpAccept = OnVerifyCaptcha;
+                window.onDpReject = onAjaxSuccess;
+                clearInterval(f);
+            }
+        }, 100);
+
+        var a = setInterval(function () {
+            if ($("#btnSubmit").is(":visible")) {
+                $("#btnSubmit").click();
+                clearInterval(a);
+            }
+        }, 100);
+    }, 120);
+
+})();
+    //-------------------//
+
+})();
+    console.log("تم تنفيذ الشيفرة لزر Rabat Students - Non-tertiary studies   Normal بنجاح!");
+  });
+  const RabatNPremiumButton = createButton("RabatStudents - Non-tertiary studies  Premium", function() {
+(function () {
+    "use strict";
+
+       (async function() {
+    'use strict';
+
+    var vtvUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vtv";
+    var thirdUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vt";
+
+    if (window.location.href.startsWith(vtvUrlPrefix)) {
+        const btnVerify = document.querySelector("#btnVerify");
+        if (btnVerify) {
+            btnVerify.click();
+        }
+    }
+
+    let isOkButtonClicked = false;
+
+    async function RemplirLocation() {
+        var locationElement;
+        var isVisibleLocation;
+        for (var i = 1; i < 10; i++) {
+            locationElement = document.querySelector(
+                '[aria-owns="Location' + i + '_listbox"]'
+            );
+            if (locationElement !== null) {
+                isVisibleLocation = locationElement.offsetParent !== null;
+
+                if (isVisibleLocation) {
+                    console.log("Location " + i + " is visible");
+                    var Location = $("#Location" + i).data("kendoDropDownList");
+                    Location.select(4); //4 corresponds to 'Rabat'
+                    Location.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("Element " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirVisaType() {
+        var VisaTypeElement;
+        var isVisibleVisa;
+        for (var i = 1; i < 10; i++) {
+            VisaTypeElement = document.querySelector(
+                '[aria-owns="VisaType' + i + '_listbox"]'
+            );
+            if (VisaTypeElement !== null) {
+                isVisibleVisa = VisaTypeElement.offsetParent !== null;
+
+                if (isVisibleVisa) {
+                    console.log("VisaType " + i + " is visible");
+                    var VisaType = $("#VisaType" + i).data("kendoDropDownList");
+                    VisaType.select(1); // 1 corresponds to 'National '
+                    VisaType.trigger("change");
+
+                    await new Promise(resolve => {
+                        setTimeout(resolve, 100);
+                    });
+
+                    // Click the 'Ok' button in the modal
+                    $('button[data-bs-dismiss="modal"]').click();
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("VisaType " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirVisaSubType() {
+        var VisaSubTypeElement;
+        var isVisibleSubVisa;
+        for (var i = 1; i < 10; i++) {
+            VisaSubTypeElement = document.querySelector(
+                '[aria-owns="VisaSubType' + i + '_listbox"]'
+            );
+            if (VisaSubTypeElement !== null) {
+                isVisibleSubVisa = VisaSubTypeElement.offsetParent !== null;
+
+                if (isVisibleSubVisa && isOkButtonClicked) {
+                    console.log("VisaSubType " + i + " is visible");
+                    var VisaSubType = $("#VisaSubType" + i).data("kendoDropDownList");
+                     VisaSubType.select(2); // 2 corresponds to 'family reunification visa '
+                    VisaSubType.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("VisaType " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirCategoryId() {
+        var AppointmentCategoryIdElement;
+        var isVisible;
+        for (var i = 1; i < 10; i++) {
+            AppointmentCategoryIdElement = document.querySelector(
+                '[aria-owns="AppointmentCategoryId' + i + '_listbox"]'
+            );
+            if (AppointmentCategoryIdElement !== null) {
+                isVisible = AppointmentCategoryIdElement.offsetParent !== null;
+
+                if (isVisible) {
+                    console.log("Appointment " + i + " is visible");
+                    var AppCategoryId = $("#AppointmentCategoryId" + i).data(
+                        "kendoDropDownList"
+                    );
+                    AppCategoryId.select(2); // 2 corresponds to 'Premium'
+                    AppCategoryId.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("Element " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    function handleOkButtonClick() {
+        isOkButtonClicked = true;
+
+        RemplirVisaSubType();
+    }
+
+    $('button[data-bs-dismiss="modal"]').on("click", handleOkButtonClick);
+
+    await RemplirLocation();
+    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+    await RemplirVisaType();
+    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+    await RemplirCategoryId();
+
+    //--------------------//
+    var OnVerifyCaptcha;
+    var onAjaxSuccess;
+
+    setTimeout(function () {
+        var f = setInterval(function () {
+            if (
+                typeof OnVerifyCaptcha !== "undefined" &&
+                typeof b !== "undefined" &&
+                typeof d !== "undefined"
+            ) {
+                window.OnVerifyCaptcha = OnVerifyCaptcha;
+                $("#dpModal").modal("hide");
+                window.onDpAccept = OnVerifyCaptcha;
+                window.onDpReject = onAjaxSuccess;
+                clearInterval(f);
+            }
+        }, 100);
+
+        var a = setInterval(function () {
+            if ($("#btnSubmit").is(":visible")) {
+                $("#btnSubmit").click();
+                clearInterval(a);
+            }
+        }, 100);
+    }, 120);
+
+})();
+    //-------------------//
+
+})();
+    console.log("تم تنفيذ الشيفرة لزر Rabat Students - Non-tertiary studies  Premium بنجاح!");
+  });
+
+  const RabatGNormalButton = createButton("Rabat Students - Graduate studies  Normal", function() {
+(function () {
+    "use strict";
+
+     (async function() {
+    'use strict';
+
+    var vtvUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vtv";
+    var thirdUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vt";
+
+    if (window.location.href.startsWith(vtvUrlPrefix)) {
+        const btnVerify = document.querySelector("#btnVerify");
+        if (btnVerify) {
+            btnVerify.click();
+        }
+    }
+
+    let isOkButtonClicked = false;
+
+    async function RemplirLocation() {
+        var locationElement;
+        var isVisibleLocation;
+        for (var i = 1; i < 10; i++) {
+            locationElement = document.querySelector(
+                '[aria-owns="Location' + i + '_listbox"]'
+            );
+            if (locationElement !== null) {
+                isVisibleLocation = locationElement.offsetParent !== null;
+
+                if (isVisibleLocation) {
+                    console.log("Location " + i + " is visible");
+                    var Location = $("#Location" + i).data("kendoDropDownList");
+                    Location.select(4); //4 corresponds to 'Rabat'
+                    Location.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("Element " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirVisaType() {
+        var VisaTypeElement;
+        var isVisibleVisa;
+        for (var i = 1; i < 10; i++) {
+            VisaTypeElement = document.querySelector(
+                '[aria-owns="VisaType' + i + '_listbox"]'
+            );
+            if (VisaTypeElement !== null) {
+                isVisibleVisa = VisaTypeElement.offsetParent !== null;
+
+                if (isVisibleVisa) {
+                    console.log("VisaType " + i + " is visible");
+                    var VisaType = $("#VisaType" + i).data("kendoDropDownList");
+                    VisaType.select(1); // 1 corresponds to 'National'
+                    VisaType.trigger("change");
+
+                    await new Promise(resolve => {
+                        setTimeout(resolve, 100);
+                    });
+
+                    // Click the 'Ok' button in the modal
+                    $('button[data-bs-dismiss="modal"]').click();
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("VisaType " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirVisaSubType() {
+        var VisaSubTypeElement;
+        var isVisibleSubVisa;
+        for (var i = 1; i < 10; i++) {
+            VisaSubTypeElement = document.querySelector(
+                '[aria-owns="VisaSubType' + i + '_listbox"]'
+            );
+            if (VisaSubTypeElement !== null) {
+                isVisibleSubVisa = VisaSubTypeElement.offsetParent !== null;
+
+                if (isVisibleSubVisa && isOkButtonClicked) {
+                    console.log("VisaSubType " + i + " is visible");
+                    var VisaSubType = $("#VisaSubType" + i).data("kendoDropDownList");
+                     VisaSubType.select(3); // 3 corresponds to ' Students - Graduate studies'
+                    VisaSubType.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("VisaType " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirCategoryId() {
+        var AppointmentCategoryIdElement;
+        var isVisible;
+        for (var i = 1; i < 10; i++) {
+            AppointmentCategoryIdElement = document.querySelector(
+                '[aria-owns="AppointmentCategoryId' + i + '_listbox"]'
+            );
+            if (AppointmentCategoryIdElement !== null) {
+                isVisible = AppointmentCategoryIdElement.offsetParent !== null;
+
+                if (isVisible) {
+                    console.log("Appointment " + i + " is visible");
+                    var AppCategoryId = $("#AppointmentCategoryId" + i).data(
+                        "kendoDropDownList"
+                    );
+                    AppCategoryId.select(1); // 1 corresponds to 'Normal'
+                    AppCategoryId.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("Element " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    function handleOkButtonClick() {
+        isOkButtonClicked = true;
+
+        RemplirVisaSubType();
+    }
+
+    $('button[data-bs-dismiss="modal"]').on("click", handleOkButtonClick);
+
+    await RemplirLocation();
+    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+    await RemplirVisaType();
+    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+    await RemplirCategoryId();
+
+    //--------------------//
+    var OnVerifyCaptcha;
+    var onAjaxSuccess;
+
+    setTimeout(function () {
+        var f = setInterval(function () {
+            if (
+                typeof OnVerifyCaptcha !== "undefined" &&
+                typeof b !== "undefined" &&
+                typeof d !== "undefined"
+            ) {
+                window.OnVerifyCaptcha = OnVerifyCaptcha;
+                $("#dpModal").modal("hide");
+                window.onDpAccept = OnVerifyCaptcha;
+                window.onDpReject = onAjaxSuccess;
+                clearInterval(f);
+            }
+        }, 100);
+
+        var a = setInterval(function () {
+            if ($("#btnSubmit").is(":visible")) {
+                $("#btnSubmit").click();
+                clearInterval(a);
+            }
+        }, 100);
+    }, 120);
+
+})();
+
+    //-------------------//
+
+})();
+    console.log("تم تنفيذ الشيفرة لزر  Rabat Students - Graduate studies Normal بنجاح!");
+  });
+
+  const RabatGPremiumButton = createButton("Rabat Students - Graduate studies Premium", function() {
+(function () {
+    "use strict";
+
+   (async function() {
+    'use strict';
+
+    var vtvUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vtv";
+    var thirdUrlPrefix = "https://morocco.blsportugal.com/MAR/bls/vt";
+
+    if (window.location.href.startsWith(vtvUrlPrefix)) {
+        const btnVerify = document.querySelector("#btnVerify");
+        if (btnVerify) {
+            btnVerify.click();
+        }
+    }
+
+    let isOkButtonClicked = false;
+
+    async function RemplirLocation() {
+        var locationElement;
+        var isVisibleLocation;
+        for (var i = 1; i < 10; i++) {
+            locationElement = document.querySelector(
+                '[aria-owns="Location' + i + '_listbox"]'
+            );
+            if (locationElement !== null) {
+                isVisibleLocation = locationElement.offsetParent !== null;
+
+                if (isVisibleLocation) {
+                    console.log("Location " + i + " is visible");
+                    var Location = $("#Location" + i).data("kendoDropDownList");
+                    Location.select(4); //4 corresponds to 'Rabat'
+                    Location.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("Element " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirVisaType() {
+        var VisaTypeElement;
+        var isVisibleVisa;
+        for (var i = 1; i < 10; i++) {
+            VisaTypeElement = document.querySelector(
+                '[aria-owns="VisaType' + i + '_listbox"]'
+            );
+            if (VisaTypeElement !== null) {
+                isVisibleVisa = VisaTypeElement.offsetParent !== null;
+
+                if (isVisibleVisa) {
+                    console.log("VisaType " + i + " is visible");
+                    var VisaType = $("#VisaType" + i).data("kendoDropDownList");
+                    VisaType.select(1); // 1 corresponds to 'National'
+                    VisaType.trigger("change");
+
+                    await new Promise(resolve => {
+                        setTimeout(resolve, 100);
+                    });
+
+                    // Click the 'Ok' button in the modal
+                    $('button[data-bs-dismiss="modal"]').click();
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("VisaType " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirVisaSubType() {
+        var VisaSubTypeElement;
+        var isVisibleSubVisa;
+        for (var i = 1; i < 10; i++) {
+            VisaSubTypeElement = document.querySelector(
+                '[aria-owns="VisaSubType' + i + '_listbox"]'
+            );
+            if (VisaSubTypeElement !== null) {
+                isVisibleSubVisa = VisaSubTypeElement.offsetParent !== null;
+
+                if (isVisibleSubVisa && isOkButtonClicked) {
+                    console.log("VisaSubType " + i + " is visible");
+                    var VisaSubType = $("#VisaSubType" + i).data("kendoDropDownList");
+                     VisaSubType.select(3); // 3 corresponds to ' Students - Graduate studies'
+                    VisaSubType.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("VisaType " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    async function RemplirCategoryId() {
+        var AppointmentCategoryIdElement;
+        var isVisible;
+        for (var i = 1; i < 10; i++) {
+            AppointmentCategoryIdElement = document.querySelector(
+                '[aria-owns="AppointmentCategoryId' + i + '_listbox"]'
+            );
+            if (AppointmentCategoryIdElement !== null) {
+                isVisible = AppointmentCategoryIdElement.offsetParent !== null;
+
+                if (isVisible) {
+                    console.log("Appointment " + i + " is visible");
+                    var AppCategoryId = $("#AppointmentCategoryId" + i).data(
+                        "kendoDropDownList"
+                    );
+                    AppCategoryId.select(2); // 2 corresponds to 'Premium'
+                    AppCategoryId.trigger("change");
+
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+                } else {
+                    // console.log("Element " + i + " is not visible");
+                }
+            }
+        }
+    }
+
+    function handleOkButtonClick() {
+        isOkButtonClicked = true;
+
+        RemplirVisaSubType();
+    }
+
+    $('button[data-bs-dismiss="modal"]').on("click", handleOkButtonClick);
+
+    await RemplirLocation();
+    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+    await RemplirVisaType();
+    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
+    await RemplirCategoryId();
+
+    //--------------------//
+    var OnVerifyCaptcha;
+    var onAjaxSuccess;
+
+    setTimeout(function () {
+        var f = setInterval(function () {
+            if (
+                typeof OnVerifyCaptcha !== "undefined" &&
+                typeof b !== "undefined" &&
+                typeof d !== "undefined"
+            ) {
+                window.OnVerifyCaptcha = OnVerifyCaptcha;
+                $("#dpModal").modal("hide");
+                window.onDpAccept = OnVerifyCaptcha;
+                window.onDpReject = onAjaxSuccess;
+                clearInterval(f);
+            }
+        }, 100);
+
+        var a = setInterval(function () {
+            if ($("#btnSubmit").is(":visible")) {
+                $("#btnSubmit").click();
+                clearInterval(a);
+            }
+        }, 100);
+    }, 120);
+// Wait for the modal to be fully shown
+$(document).ready(function() {
+    // Function to handle the modal shown event
+    $('#commonModal').on('shown.bs.modal', function () {
+        // Find the Ok button and trigger a click event
+        $('#commonModal .btn-primary').click();
+    });
+});
+
+})();
+
+    //-------------------//
+
+})();
+      console.log("تم تنفيذ الشيفرة لزر  Rabat Students - Graduate studies Premium بنجاح!");
+  });
+
   //-----------------------------------------------------------/
 
   // إضافة الأزرار إلى العنصر الذي يحتوي على الأزرار
@@ -180,12 +1075,14 @@ if (targetSibling) {
  const row1 = document.createElement('div');
   row1.style.display = 'flex';
   row1.appendChild(RabatLNormalButton);
-
+  row1.appendChild(RabatNNormalButton);
+  row1.appendChild(RabatGNormalButton);
     
   const row2 = document.createElement('div');
   row2.style.display = 'flex';
   row2.appendChild(RabatLPremiumButton);
-
+  row2.appendChild(RabatNPremiumButton);
+  row2.appendChild(RabatGPremiumButton); 
 
   // إضافة الصفوف إلى العنصر الذي يحتوي على الأزرار
   buttonsContainer.appendChild(row1);
@@ -249,7 +1146,7 @@ function createButton(label, clickHandler) {
   // تحقق من عنوان URL الحالي وتنفيذ الشيفرة فقط إذا كانت الصفحة المطلوبة
   if (
     window.location.href.startsWith("https://www.blsspainmorocco.net/MAR/account/login") ||
-    window.location.href.startsWith("blsspainmorocco.net/MAR/Appointment/VisaType")
+    window.location.href.startsWith("https://www.blsspainmorocco.net/MAR/bls/vtv")
   ) {
     // تأخير تنفيذ الشيفرة لمدة 3 ثواني
     setTimeout(function () {
