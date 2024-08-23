@@ -5,8 +5,8 @@
 
 
 
-var vtvUrlPrefix = "https://www.blsspainmorocco.net/MAR/bls/vtv";
-var thirdUrlPrefix = "https://www.blsspainmorocco.net/MAR/bls/vt";
+var vtvUrlPrefix = "https://www.blsspainmorocco.net/MAR/Appointment/VisaType";
+var thirdUrlPrefix = "https://www.blsspainmorocco.net/MAR/Appointment/VisaType";
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (window.location.href.startsWith(vtvUrlPrefix)) {
