@@ -5,209 +5,83 @@
 
 
 
-var thirdUrlPrefix = "blsspainmorocco.net/MAR/Appointment/VisaType";
+var vtvUrlPrefix = "https://www.blsspainmorocco.net/MAR/bls/vtv";
+var thirdUrlPrefix = "https://www.blsspainmorocco.net/MAR/bls/vt";
 
-1
-
-
-
-
-//تحقق من الصفحة ونفذ الإجراء المناسب
-
-if (window.location.href.startsWith(vtvUrlPrefix)) {
-  const btnVerify = document.querySelector("#btnVerify");
-  if (btnVerify) {
-    btnVerify.click();
+document.addEventListener('DOMContentLoaded', async () => {
+  if (window.location.href.startsWith(vtvUrlPrefix)) {
+    const btnVerify = document.querySelector("#btnVerify");
+    if (btnVerify) {
+      btnVerify.click();
+    }
+  } else if (window.location.href.startsWith(thirdUrlPrefix)) {
+    // Create and add the Rabat button
+    const RabatLNormalButton = createButton("Rabat Language/selectivity Normal", async () => {
+      await fillDropdowns();
+      const modalCloseButton = document.querySelector('button[data-bs-dismiss="modal"]');
+      if (modalCloseButton) {
+        modalCloseButton.click();
+      }
+    });
+    document.body.appendChild(RabatLNormalButton);
   }
-
-
-//----------------VT--------------------//
-
-
-    } else if (window.location.href.startsWith(thirdUrlPrefix)) {
-  // دالة لإضافة الأزرار إلى الصفحة
-
-  // إنشاء الأزرار
-  const RabatLNormalButton = createButton("Rabat Language/selectivity Normal", function() {
-(function () {
-    "use strict";
-
-  (async function() {
-    'use strict';
-
-    
-    var thirdUrlPrefix = "blsspainmorocco.net/MAR/Appointment/VisaType";
-
-    if (window.location.href.startsWith(vtvUrlPrefix)) {
-        const btnVerify = document.querySelector("#btnVerify");
-        if (btnVerify) {
-            btnVerify.click();
-        }
-    }
-
-    let isOkButtonClicked = false;
-
-    async function RemplirLocation() {
-        var locationElement;
-        var isVisibleLocation;
-        for (var i = 1; i < 10; i++) {
-            locationElement = document.querySelector(
-                '[aria-owns="Location' + i + '_listbox"]'
-            );
-            if (locationElement !== null) {
-                isVisibleLocation = locationElement.offsetParent !== null;
-
-                if (isVisibleLocation) {
-                    console.log("Location " + i + " is visible");
-                    var Location = $("#Location" + i).data("kendoDropDownList");
-                    Location.select(4); //4 corresponds to 'Rabat'
-                    Location.trigger("change");
-
-                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-                } else {
-                    // console.log("Element " + i + " is not visible");
-                }
-            }
-        }
-    }
-
-    async function RemplirVisaType() {
-        var VisaTypeElement;
-        var isVisibleVisa;
-        for (var i = 1; i < 10; i++) {
-            VisaTypeElement = document.querySelector(
-                '[aria-owns="VisaType' + i + '_listbox"]'
-            );
-            if (VisaTypeElement !== null) {
-                isVisibleVisa = VisaTypeElement.offsetParent !== null;
-
-                if (isVisibleVisa) {
-                    console.log("VisaType " + i + " is visible");
-                    var VisaType = $("#VisaType" + i).data("kendoDropDownList");
-                    VisaType.select(1); //1 corresponds to 'National'
-                    VisaType.trigger("change");
-
-                 await new Promise(resolve => {
-                        setTimeout(resolve, 100);
-                    });
-
-                    // Click the 'Ok' button in the modal
-                    $('button[data-bs-dismiss="modal"]').click();
-
-                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-                } else {
-              
-                    // console.log("VisaType " + i + " is not visible");
-                }
-            }
-        }
-    }
-
-    async function RemplirVisaSubType() {
-        var VisaSubTypeElement;
-        var isVisibleSubVisa;
-        for (var i = 1; i < 10; i++) {
-            VisaSubTypeElement = document.querySelector(
-                '[aria-owns="VisaSubType' + i + '_listbox"]'
-            );
-            if (VisaSubTypeElement !== null) {
-                isVisibleSubVisa = VisaSubTypeElement.offsetParent !== null;
-
-                if (isVisibleSubVisa && isOkButtonClicked) {
-                    console.log("VisaSubType " + i + " is visible");
-                    var VisaSubType = $("#VisaSubType" + i).data("kendoDropDownList");
-                     VisaSubType.select(1); // 1 corresponds to 'Language/selectivity'
-                    VisaSubType.trigger("change");
-
-                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-                } else {
-                    // console.log("VisaType " + i + " is not visible");
-                }
-            }
-        }
-    }
-
-    async function RemplirCategoryId() {
-        var AppointmentCategoryIdElement;
-        var isVisible;
-        for (var i = 1; i < 10; i++) {
-            AppointmentCategoryIdElement = document.querySelector(
-                '[aria-owns="AppointmentCategoryId' + i + '_listbox"]'
-            );
-            if (AppointmentCategoryIdElement !== null) {
-                isVisible = AppointmentCategoryIdElement.offsetParent !== null;
-
-                if (isVisible) {
-                    console.log("Appointment " + i + " is visible");
-                    var AppCategoryId = $("#AppointmentCategoryId" + i).data(
-                        "kendoDropDownList"
-                    );
-                    AppCategoryId.select(1); // 1 corresponds to 'Normal'
-                    AppCategoryId.trigger("change");
-
-                    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-                } else {
-                    // console.log("Element " + i + " is not visible");
-                }
-            }
-        }
-    }
-
-    function handleOkButtonClick() {
-        isOkButtonClicked = true;
-
-        RemplirVisaSubType();
-    }
-
-    $('button[data-bs-dismiss="modal"]').on("click", handleOkButtonClick);
-
-    await RemplirLocation();
-    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-    await RemplirVisaType();
-    await new Promise(resolve => setTimeout(resolve, 100)); // Ajouter un délai de 100 ms
-    await RemplirCategoryId();
-
-    //--------------------//
-    var OnVerifyCaptcha;
-    var onAjaxSuccess;
-
-    setTimeout(function () {
-        var f = setInterval(function () {
-            if (
-                typeof OnVerifyCaptcha !== "undefined" &&
-                typeof b !== "undefined" &&
-                typeof d !== "undefined"
-            ) {
-                window.OnVerifyCaptcha = OnVerifyCaptcha;
-                $("#dpModal").modal("hide");
-                window.onDpAccept = OnVerifyCaptcha;
-                window.onDpReject = onAjaxSuccess;
-                clearInterval(f);
-            }
-        }, 100);
-
-        var a = setInterval(function () {
-            if ($("#btnSubmit").is(":visible")) {
-                $("#btnSubmit").click();
-                clearInterval(a);
-            }
-        }, 100);
-    }, 120);
-
-})();
-document.addEventListener('DOMContentLoaded', function() {
- 
-    setTimeout(function() {
-  content
-        var buttons = document.querySelectorAll('button');
-        for (var i = 0; i < buttons.length; i++) {
-            if (buttons[i].textContent.trim() === 'Ok') {
-                buttons[i].click();
-                break;
-            }
-        }
-    }, 1000); 
 });
+
+async function fillDropdowns() {
+  await fillDropdown('Location', 'Rabat', 4);  // Assuming 'Rabat' corresponds to index 4
+  await fillDropdown('VisaType', 'National', 1); // Assuming 'National' corresponds to index 1
+  await fillDropdown('VisaSubType', 'Language/selectivity', 1); // Assuming 'Language/selectivity' corresponds to index 1
+  await fillDropdown('AppointmentCategoryId', 'Normal', 1); // Assuming 'Normal' corresponds to index 1
+}
+
+async function fillDropdown(dropdownType, selectText, selectIndex) {
+  for (let i = 1; i < 10; i++) {
+    const dropdown = document.querySelector(`[aria-owns="${dropdownType}${i}_listbox"]`);
+    if (dropdown && dropdown.offsetParent !== null) {
+      console.log(`${dropdownType} ${i} is visible`);
+      const kendoDropdown = $(`#${dropdownType}${i}`).data("kendoDropDownList");
+      if (kendoDropdown) {
+        kendoDropdown.select(selectIndex);
+        kendoDropdown.trigger("change");
+        await new Promise(resolve => setTimeout(resolve, 100)); // Add a delay
+      }
+    }
+  }
+}
+
+function createButton(text, onClick) {
+  const button = document.createElement('button');
+  button.textContent = text;
+  button.onclick = onClick;
+  return button;
+}
+
+// Function to handle captcha and form submission
+(async function handleCaptchaAndSubmit() {
+  let OnVerifyCaptcha;
+  let onAjaxSuccess;
+
+  setTimeout(() => {
+    let interval = setInterval(() => {
+      if (typeof OnVerifyCaptcha !== "undefined" && typeof b !== "undefined" && typeof d !== "undefined") {
+        window.OnVerifyCaptcha = OnVerifyCaptcha;
+        $("#dpModal").modal("hide");
+        window.onDpAccept = OnVerifyCaptcha;
+        window.onDpReject = onAjaxSuccess;
+        clearInterval(interval);
+      }
+    }, 100);
+
+    let submitInterval = setInterval(() => {
+      const btnSubmit = $("#btnSubmit");
+      if (btnSubmit.is(":visible")) {
+        btnSubmit.click();
+        clearInterval(submitInterval);
+      }
+    }, 100);
+  }, 120);
+})();
+
     //-------------------//
 
 
